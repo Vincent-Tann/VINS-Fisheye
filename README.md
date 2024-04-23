@@ -53,9 +53,9 @@ Term 1
 
 ```bash
 #If use CUDA
-roslaunch vins fisheye_split.launch config_file:=/home/your_name/your_ws/src/VINS-Fusion-Fisheye/config/fisheye_ptgrey_n3/fisheye_cuda.yaml
+roslaunch vins fisheye_node.launch config_file:=/root/swarm_ws/src/src/VINS-Fisheye/config/fisheye_ptgrey_n3/fisheye_cuda.yaml
 #If use CPU
-roslaunch vins fisheye_split.launch config_file:=/home/your_name/your_ws/src/VINS-Fusion-Fisheye/config/fisheye_ptgrey_n3/fisheye_cpu.yaml
+roslaunch vins fisheye_node.launch config_file:=/root/swarm_ws/src/src/VINS-Fisheye/config/fisheye_ptgrey_n3/fisheye_cpu.yaml
 ```
 
 Term 2
