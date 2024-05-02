@@ -46,6 +46,39 @@ set(ENABLE_VWORKS false)
 
 NVIDIA VisionWorks gives slightly better performance, however, the VisionWorks support for this package is not stable yet.
 
+### 在omni-swarm给的容器中，直接catkin_make会报错opencv 3.2不支持cuda
+
+这是因为给定容器环境安装了两个opencv，一个是不支持cuda的3.2（用apt安装的），另一个是下载源码手动编译的3.4（位置在/usr/local/）。
+
+即使在本项目的CMAkeLists里修改了find_package(OpenCV 3.4 REQUIRED),但编译时还是会报一样的错误，还是去找3.2了。用以下指令查看可执行文件的依赖库，发现3.2和3.4都有不少：
+
+```zsh
+ldd ~/swarm_ws/devel/lib/vins/vins_node_fisheye | grep libopencv
+```
+
+推测是本项目依赖的（CMAkeLists有find_package）cv_bridge依赖opencv 3.2。这个cv_bridge是apt安装的，我们手动下载源码，修改CMAkeLists之后，手动编译一遍。
+
+```zsh
+mkdir -p ~/ros_catkin_ws/src
+cd ~/ros_catkin_ws/src
+git clone https://github.com/ros-perception/vision_opencv.git -b melodic
+vim ~/ros_catkin_ws/src/vision_opencv/cv_bridge/CMakeLists.txt
+# 随后把其中find_package(OpenCV 3)都改为3.4
+
+#编译
+cd ~/ros_catkin_ws
+catkin_make_isolated --install --pkg cv_bridge
+source install_isolated/setup.bash
+
+# 随后可以查看cv_bridge的依赖，发现没有依赖opencv3.2的
+ldd ~/ros_catkin_ws/install_isolated/lib/libcv_bridge.so | grep libopencv
+# 再看本项目的依赖
+ldd ~/swarm_ws/devel/lib/vins/vins_node_fisheye | grep libopencv
+# 发现大多3.2都消失了，但是最后还有一个libopencv_core.so.3.2，可能是其他依赖的库的依赖项，但是没有影响了。
+```
+
+
+
 ### Fisheye usage
 
 Term 1
