@@ -83,6 +83,12 @@ ldd ~/swarm_ws/devel/lib/vins/vins_node_fisheye | grep libopencv
 
 Term 1
 
+如果使用nodelet（对应fisheye.launch文件），要先开roscore和nodelet_manager:
+
+```zsh
+rosrun nodelet nodelet manager __name:=swarm_manager
+```
+
 
 ```bash
 #If use CUDA
