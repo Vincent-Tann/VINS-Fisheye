@@ -68,11 +68,15 @@ vim ~/ros_catkin_ws/src/vision_opencv/cv_bridge/CMakeLists.txt
 #编译
 cd ~/ros_catkin_ws
 catkin_make_isolated --install --pkg cv_bridge
-source install_isolated/setup.bash
+source install_isolated/setup.zsh # 可以把source ~/ros_catkin_ws/install_isolated/setup.zsh加入~/.zshrc
 
 # 随后可以查看cv_bridge的依赖，发现没有依赖opencv3.2的
 ldd ~/ros_catkin_ws/install_isolated/lib/libcv_bridge.so | grep libopencv
-# 再看本项目的依赖
+# 再重新编译本项目，并查看依赖
+cd ~/swarm_ws
+rm -rf build devel
+catkin_make -j8
+source devel/setup.zsh
 ldd ~/swarm_ws/devel/lib/vins/vins_node_fisheye | grep libopencv
 # 发现大多3.2都消失了，但是最后还有一个libopencv_core.so.3.2，可能是其他依赖的库的依赖项，但是没有影响了。
 ```
