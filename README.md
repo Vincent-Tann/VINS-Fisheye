@@ -108,7 +108,7 @@ roslaunch vins fisheye.launch config_file:=/root/swarm_ws/src/VINS-Fisheye/confi
 
 Term 2
 ```bash
-rosbag play fishey_vins_2020-01-30-10-38-14.bag --clock -s 12
+rosbag play fisheye_vins_2020-01-30-10-38-14.bag --clock -s 12
 ```
 
 Term 3(for visuallization only)
